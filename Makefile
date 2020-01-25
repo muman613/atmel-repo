@@ -1,13 +1,17 @@
 # Makefile for baremetal programming of Arduino Mega2560 (Atmel2560)
 
+# DEFINES=-DATMEL2560
+DEFINES=-DATMEL328
+MCU=atmega328
+
 baremetal.hex : baremetal
 	avr-objcopy -O ihex -R .eeprom baremetal baremetal.hex
 
 baremetal: baremetal.o 
-	avr-gcc -mmcu=atmega2560 baremetal.o -o baremetal
+	avr-gcc -mmcu=${MCU} baremetal.o -o baremetal
 
 baremetal.o: baremetal.c
-	avr-gcc -Os -DF_CPU=16000000UL -mmcu=atmega2560 -c -o baremetal.o baremetal.c
+	avr-gcc -Os -DF_CPU=16000000UL -mmcu=${MCU} ${DEFINES} -c -o baremetal.o baremetal.c
 
 clean:
 	rm -f *.o *.hex baremetal
