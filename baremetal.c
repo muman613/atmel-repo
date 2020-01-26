@@ -1,19 +1,19 @@
 #include <avr/io.h>
 #include <util/delay.h>
 #if defined(ATMEL2560)
-  s  #include <avr/iom2560.h>
+//   #include <avr/iom2560.h>
 #elif defined(ATMEL328)
 //   #include <avr/iom328p.h>
 #endif
 
-#define MS_DELAY 100
+#define MS_DELAY 500
 
 #if defined(ATMEL2560)
-const int ddb = DDB7;
-const int portb = PORTB7;
+    const int ddb   = DDB7;
+    const int portb = PORTB7;
 #elif defined(ATMEL328)
-const int ddb = DDB5;
-const int portb = PORTB5;
+    const int ddb   = DDB5;
+    const int portb = PORTB5;
 #endif
 
 int main (void) {
