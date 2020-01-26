@@ -1,22 +1,20 @@
 #include <avr/io.h>
 #include <util/delay.h>
-#if defined(ATMEL2560)
-//   #include <avr/iom2560.h>
-#elif defined(ATMEL328)
-//   #include <avr/iom328p.h>
-#endif
 
-#define MS_DELAY 500
 
-#if defined(ATMEL2560)
+
+#define MS_DELAY 5000
+
+#if defined(__AVR_ATmega2560__)
     const int ddb   = DDB7;
     const int portb = PORTB7;
-#elif defined(ATMEL328)
+#elif defined(__AVR_ATmega328P__)
     const int ddb   = DDB5;
     const int portb = PORTB5;
 #endif
 
 int main (void) {
+
     /*Set to one the fifth bit of DDRB to one
     **Set digital pin 13 to output mode */
     DDRB |= _BV(ddb);
