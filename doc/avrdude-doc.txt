@@ -1,0 +1,4 @@
+Command to flash fw using avrdude and arduino bootloader
+
+avrdude  -v -patmega328p -carduino -P/dev/ttyS10 -b115200 -D -Uflash:w:baremetal.hex:i
+
