@@ -2,7 +2,7 @@
 
 PROJECT = baremetal-uart
 TARGET ?= ATMEGA328
-PORT ?= /dev/ttyS10
+PORT ?= /dev/ttyACM0
 F_CPU ?= 16000000
 
 ifeq ($(TARGET), ATMEGA328)
@@ -11,7 +11,7 @@ ifeq ($(TARGET), ATMEGA328)
 endif
 ifeq ($(TARGET), ATMEGA2560)
 	MCU=atmega2560
-	PROGRAMMER=arduino
+	PROGRAMMER=wiring
 endif
 
 SRCS = baremetal.c uart.c
@@ -30,7 +30,7 @@ clean:
 	rm -f *.o ${PROJECT}.hex ${PROJECT}.elf
 
 flash: ${PROJECT}.hex
-	avrdude -v -p${MCU} -c${PROGRAMMER} -P${PORT} -b115200 -e -Uflash:w:${PROJECT}.hex:i
+	avrdude -v -p${MCU} -c${PROGRAMMER} -P${PORT} -b115200 -D -Uflash:w:${PROJECT}.hex:i
 
 erase:
 	avrdude -v -p${MCU} -c${PROGRAMMER} -P${PORT} -b115200 -e

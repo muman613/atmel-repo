@@ -37,6 +37,9 @@ int main(void)
     sei();
     // enable interrupts
 
+    /*Set to one the fifth bit of DDRB to one
+    **Set digital pin 13 to output mode */
+    DDRB |= _BV(ddb);
 
     while (1)
     {
@@ -46,6 +49,15 @@ int main(void)
 
 ISR (TIMER1_COMPA_vect)
 {
+    static int toggle = 0;
+
     // action to be done every 1 sec
     uart_print("ISR\n\r");
+    if (toggle == 0) {
+        PORTB |= _BV(portb);
+        toggle = 1;
+    } else {
+        PORTB &= ~_BV(portb);
+        toggle = 0;
+    }
 }
