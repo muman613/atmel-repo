@@ -15,8 +15,12 @@ ifeq ($(TARGET), ATMEGA2560)
 endif
 
 PROJECT = baremetal-i2c
-SRCS = baremetal.c twi.c gpio.c
+SRCS = 	baremetal.c 		\
+		../common/gpio.c	\
+		../common/twi.c
+
 OBJS = ${SRCS:%.c=%.o}
+CFLAGS = -I ../common/
 
 ${PROJECT}.hex : ${PROJECT}.elf
 	avr-objcopy -O ihex -R .eeprom ${PROJECT}.elf ${PROJECT}.hex
@@ -24,11 +28,14 @@ ${PROJECT}.hex : ${PROJECT}.elf
 ${PROJECT}.elf: ${OBJS}
 	avr-gcc -mmcu=${MCU} ${OBJS} -o ${PROJECT}.elf
 
-%.o : src/%.c
-	avr-gcc -Os -DF_CPU=${F_CPU} -mmcu=${MCU} ${DEFINES} -c $<
+%.o : src/%.c 
+	avr-gcc -Os -DF_CPU=${F_CPU} -mmcu=${MCU} ${DEFINES} ${CFLAGS} -c $<
+
+../common/%.o : ../common/%.c 
+	avr-gcc -Os -DF_CPU=${F_CPU} -mmcu=${MCU} ${DEFINES} ${CFLAGS} -c $< -o $@
 
 clean:
-	rm -f *.o baremetal.hex baremetal.elf
+	rm -f ${OBJS} ${PROJECT}.hex ${PROJECT}.elf
 
 flash: ${PROJECT}.hex
 	avrdude  -v -p${MCU} -c${PROGRAMMER} -P${PORT} -b115200 -D -Uflash:w:${PROJECT}.hex:i
