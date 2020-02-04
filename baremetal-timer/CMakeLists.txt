@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.11)
 project("Bare Metal")
 
 # Product filename
-set(PRODUCT_NAME baremetal)
+set(PRODUCT_NAME baremetal-timer)
 
 ## AVR Chip Configuration
 # 8Mhz, this should match the crystal on your board,
@@ -20,7 +20,7 @@ ELSEIF ("${TARGET}" STREQUAL "ATMEGA328")
 ENDIF()
 
 # Default Baudrate for UART, read avr include/util/setbaud.h for usage
-set(BAUD 9600)
+set(BAUD 115200)
 # The programmer to use, read avrdude manual for list
 set(PROG_TYPE arduino)
 
@@ -43,10 +43,11 @@ set(CMAKE_ASM_COMPILER avr-gcc)
 add_definitions(
     -DF_CPU=${F_CPU}
     -DBAUD=${BAUD}
-    -DMCU=${MCU}
 )
 # mmcu MUST be passed to bot the compiler and linker, this handle the linker
 set(CMAKE_EXE_LINKER_FLAGS -mmcu=${MCU})
+
+include_directories(../common)
 
 add_compile_options(
     -mmcu=${MCU} # MCU
@@ -71,7 +72,7 @@ add_compile_options(
     -fno-split-wide-types
     -fno-tree-scev-cprop
 )
-file(GLOB SRC_FILES "src/*.c") # Load all files in src folder
+file(GLOB SRC_FILES "src/*.c" "../common/*.c") # Load all files in src folder
 
 # Create one target
 add_executable(${PRODUCT_NAME} ${SRC_FILES})
