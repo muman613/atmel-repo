@@ -1,21 +1,22 @@
 # Makefile for baremetal programming of Arduino Mega2560 (Atmel2560)
 
 PORT ?= /dev/ttyACM0
-TARGET ?= ATMEGA382
+TARGET ?= ATMEGA328
 F_CPU ?= 16000000
 
 # DEFINES=-DATMEL2560
-ifeq ($(TARGET), ATMEGA382)
+ifeq ($(TARGET), ATMEGA328)
 	MCU=atmega328p
 	PROGRAMMER=arduino
 endif
 ifeq ($(TARGET), ATMEGA2560)
 	MCU=atmega2560
-	PROGRAMMER=arduino
+	PROGRAMMER=wiring
 endif
 
 PROJECT = baremetal-uart
 SRCS = 	baremetal.c 		\
+		../common/gpio.c    \
 		../common/uart.c
 
 OBJS = ${SRCS:%.c=%.o}
