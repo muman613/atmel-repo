@@ -28,10 +28,10 @@ ${PROJECT}.hex : ${PROJECT}.elf
 ${PROJECT}.elf: ${OBJS}
 	avr-gcc -mmcu=${MCU} ${OBJS} -o ${PROJECT}.elf
 
-%.o : src/%.c 
+%.o : src/%.c
 	avr-gcc -Os -DF_CPU=${F_CPU} -mmcu=${MCU} ${DEFINES} ${CFLAGS} -c $<
 
-../common/%.o : ../common/%.c 
+../common/%.o : ../common/%.c
 	avr-gcc -Os -DF_CPU=${F_CPU} -mmcu=${MCU} ${DEFINES} ${CFLAGS} -c $< -o $@
 
 clean:
