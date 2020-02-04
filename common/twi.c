@@ -535,6 +535,7 @@ ISR(TWI_vect)
         twi_txBuffer[0] = 0x00;
       }
       __attribute__ ((fallthrough));		  
+
       // transmit first byte from buffer, fall
     case TW_ST_DATA_ACK: // byte sent, ack returned
       // copy data to output register
