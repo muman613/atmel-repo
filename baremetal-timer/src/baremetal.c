@@ -1,4 +1,4 @@
-#include <avr/io.h> 
+#include <avr/io.h>
 #include <avr/interrupt.h>
 #include <stdio.h>
 #include "uart.h"
@@ -9,14 +9,15 @@
 
 static void timer_cb(uint16_t count);
 
-// this code sets up a timer0 for 4ms @ 16Mhz clock cycle
-// an interrupt is triggered each time the interval occurs.
+static void hw_init() {
+    uart_config(115200, SERIAL_8N1);
+    init_timer1_interrupt(2000, timer_cb);
+    pinMode(BUILTIN_LED, MODE_OUTPUT);
+}
 
 int main(void)
 {
-    uart_config((uint16_t)115200);
-    init_timer1_interrupt(2000, timer_cb);
-    pinMode(BUILTIN_LED, MODE_OUTPUT);
+    hw_init();
 
     while (1)
     {

@@ -8,7 +8,7 @@
 #define OFF_DELAY   500
 #define ON_DELAY    1000
 
-unsigned long baud = 115200;
+#define BAUD_RATE    115200
 
 char msgBuffer[128];
 
@@ -17,7 +17,7 @@ int main (void) {
     int index = 0;
 
     pinMode(BUILTIN_LED, MODE_OUTPUT);
-    uart_config(baud);
+    uart_config(BAUD_RATE, SERIAL_8N1);
 
     while(1) {
         snprintf(msgBuffer, 128, "Hello World (%d)\n\r", index++);
