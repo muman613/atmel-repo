@@ -64,3 +64,12 @@ avrdude: safemode: Fuses OK (E:FD, H:D6, L:FF)
 
 avrdude done.  Thank you.
 ```
+
+## Example Projects
+
+| Directory | Description | Platforms |
+| --------- | ----------- | --------- |
+| `baremetal-blink` | Simple LED blinking application | ATMega328p/ATMega2560 |
+| `baremetal-uart` | Simple application sends data to UART periodically | ATMega328p/ATMega2560 |
+| `baremetal-timer` | Simple application programs timer 1 w/interrupt | ATMega328p/ATMega2560 |
+
