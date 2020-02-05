@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <avr/io.h>
 #include <util/delay.h>
 #include "uart.h"
@@ -5,24 +6,21 @@
 /**
  * Configure the UART peripheral.
  */
-void uart_config(uint16_t baudrate) {
-    uint16_t baud_setting = (F_CPU / 4 / baudrate - 1) / 2;
-
+void uart_config(unsigned long baud, int mode) {
+    uint16_t baud_setting = (F_CPU / 4 / baud - 1) / 2;
     UCSR0A = 1 << U2X0;
-    if (((F_CPU == 16000000UL) && (baudrate == 57600)) || (baud_setting >4095)) {
+
+    if (((F_CPU == 16000000UL) && (baud == 57600)) || (baud_setting >4095)) {
         UCSR0A = 0;
-        baud_setting = (F_CPU / 8 / (baudrate - 1)) / 2;
+        baud_setting = (F_CPU / 8 / baud - 1) / 2;
     }
 
-    // baud_setting = 17;
-    // assign the baud_setting, a.k.a. ubrr (USART Baud Rate Register)
     UBRR0H = baud_setting >> 8;
     UBRR0L = baud_setting;
-    UBRR0H = 0;
-    UBRR0L = 17;
 
-    UCSR0C = SERIAL_8N1;
+    UCSR0C = mode;
 
+    // Enable rx & tx
     sbi(UCSR0B, RXEN0);
     sbi(UCSR0B, TXEN0);
 }

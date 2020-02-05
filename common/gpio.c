@@ -189,6 +189,8 @@ static PININFO pinTable[] = {
 };
 #endif
 
+static const int pinCount = sizeof(pinTable)/sizeof(PININFO);
+
 /**
  * Set the Pin mode.
  *
@@ -196,6 +198,9 @@ static PININFO pinTable[] = {
  * mode - MODE_INPUT/MODE_INPUT_PULLUP/MODE_OUTPUT
  */
 void pinMode(int pin, int mode) {
+    if ((pin < 0) || (pin > pinCount))
+        return;
+
     switch (mode) {
         case MODE_INPUT:
             *(pinTable[pin].portInfo->ddr)  &= ~(1 << pinTable[pin].bit);
@@ -214,6 +219,9 @@ void pinMode(int pin, int mode) {
 }
 
 void digitalWrite(int pin, int value) {
+    if ((pin < 0) || (pin > pinCount))
+        return;
+
     if (value == VALUE_HIGH) {
         *(pinTable[pin].portInfo->port) |= (1 << pinTable[pin].bit);
     } else if (value == VALUE_LOW) {
@@ -223,6 +231,9 @@ void digitalWrite(int pin, int value) {
 }
 
 void togglePin(int pin) {
+    if ((pin < 0) || (pin > pinCount))
+        return;
+
     uint8_t sreg = SREG;
     cli();
     *(pinTable[pin].portInfo->port) ^= (1 << pinTable[pin].bit);
@@ -230,5 +241,8 @@ void togglePin(int pin) {
 }
 
 int digitalRead(int pin) {
+    if ((pin < 0) || (pin > pinCount))
+        return -1;
+
     return ((*pinTable[pin].portInfo->pin) & (1 << pinTable[pin].bit))?VALUE_HIGH:VALUE_LOW;
 }
